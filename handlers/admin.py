@@ -14,6 +14,10 @@ class FSMAdmin(StatesGroup):
     photo = State()
     description = State()
     #price = State()
+'''
+class FSMGame(StatesGroup): 
+    start = State()
+'''
     
 #@dp.message_handler(commands = 'load', state = None)
 async def cm_start(message: types.Message):
@@ -45,6 +49,7 @@ async def load_description(message: types.Message, state: FSMContext):
     await sqlite_database.sql_add_command(state)
     await message.answer('Я записал данные')
     await state.finish()
+
 
 
 def register_handlers_admin(dp: Dispatcher):

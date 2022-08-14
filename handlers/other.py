@@ -16,10 +16,6 @@ async def cenz(message: types.Message):
 async def i_am_robot(message: types.Message):
     await message.answer('Ты заикаешься? Бот – это ботва?')
 
-@dp.message_handler(lambda message: 'бот' in message.text)
-async def i_am_robot(message: types.Message):
-    await message.answer('Ты заикаешься? Бот – это ботва?')
-
 @dp.message_handler(lambda message: 'тупой' in message.text)
 async def i_am_robot(message: types.Message):
     await message.answer('Сам такой!')
