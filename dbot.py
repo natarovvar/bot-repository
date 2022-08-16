@@ -4,12 +4,10 @@ from create import dp
 from database import sqlite_database
 
 
-
 #API_TOKEN = '5479493314:AAEuJyJap8mmx9_vCeBdGLX7EzjwcWMMMqw'
 async def on_startup(_):
     print("bot online")
     sqlite_database.sql_database_start()
-   
 
 from handlers import client
 from handlers import admin

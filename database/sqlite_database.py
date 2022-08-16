@@ -1,6 +1,10 @@
+from email.mime import message
 from os import curdir
 import sqlite3 as sq
 
+from aiogram import types, md
+from aiogram import Dispatcher
+from create import dp, bot
 
 
 
@@ -22,6 +26,9 @@ async def sql_add_command(state):
 async def sql_add_geopostition(username, lat, lon):
         cur.execute('INSERT INTO geolocation VALUES (?,?,?)', (username, lat, lon))
         base.commit()
+        
+async def sql_unload():
+    return await(cur.execute('SELECT * FROM loaded').fetchall())
         
 
 
