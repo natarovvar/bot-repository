@@ -7,6 +7,8 @@ from aiogram.dispatcher.filters import Text
 from create import dp, bot
 from database import sqlite_database
 from database.sqlite_database import sql_add_command
+import database
+
 from keyboards import kb_client,ikb_client,idb_client
 
 from aiogram.types import InlineKeyboardButton
@@ -29,7 +31,7 @@ async def administration_panel(message: types.Message):
     ID = message.from_user.id
     aname = message.from_user.full_name
     adate = message.date
-    await bot.send_message(message.from_user.id, f'the admin panel is activated🟢\nWelcome! {aname}\nlogin at: {adate} \n\ncommands:\n- /database - database settings')
+    await bot.send_message(message.from_user.id, f'the admin panel is activated🟢\nWelcome! <b>{aname}</b>\nlogin at: {adate}\n\nuse /p to call the panel',parse_mode=types.ParseMode.HTML)
     await message.delete()
   
     
@@ -38,10 +40,10 @@ async def administration_panel(message: types.Message):
 async def cm_start(message: types.Message):
     if message.from_user.id == ID:
         await FSMAdmin.photo.set()
-        await message.reply('upload your photo (для отмены введите - /выход)')
+        await message.reply('upload your photo (для отмены введите - /e)')
     
 # выход
-# @dp.message_handler(state = "*", commands = 'выход')
+# @dp.message_handler(state = "*", commands = '/e')
 # @dp.message_handler(Text(equals='отмена',ignore_case= True), state = "*")
 async def exit_handler(message: types.Message, state: FSMContext):
     if message.from_user.id == ID:
@@ -69,10 +71,11 @@ async def load_description(message: types.Message, state: FSMContext):
         await state.finish()
 
     
-@dp.message_handler(commands=['database'])
+@dp.message_handler(commands=['p'])
 async def database_cmd(message: types.Message):
     if message.from_user.id == ID:
-        await message.answer(text='database panel:',reply_markup=idb_client)
+        await bot.send_message(message.from_user.id,text=f'<code>administation panel</code>',reply_markup=idb_client,parse_mode=types.ParseMode.HTML)
+
     
 
 @dp.callback_query_handler(text='del')
@@ -80,18 +83,27 @@ async def dell_call(callback: types.CallbackQuery):
     await callback.message.answer('Данные удалены')
     await callback.answer()
     
+@dp.callback_query_handler(text='ld')
+async def cm_start_inlinekeyboards(callback: types.CallbackQuery, state = None):
+    if callback.from_user.id == ID:
+        await FSMAdmin.photo.set()
+        await callback.message.answer('upload your photo (для отмены введите - /e)')   
+
 @dp.callback_query_handler(text='uload')
-async def dell_call(callback: types.CallbackQuery):
-    await callback.message.answer(sqlite_database.sql_unload())
-    await callback.message.answer('Данные выгружены')
-    await callback.answer()
+async def uload_inkeyboard(call: types.CallbackQuery):
+    await sqlite_database.sql_unload(call)
     
+
+
+
     
+
+
 
 def register_handlers_admin(dp: Dispatcher):
     dp.register_message_handler(cm_start,commands=['load'], state = None)
-    dp.register_message_handler(exit_handler, state = "*", commands = 'выход')
+    dp.register_message_handler(exit_handler, state = "*", commands = 'e')
     dp.register_message_handler(exit_handler, Text(equals='отмена',ignore_case= True ))
-    dp.register_message_handler(load_photo,content_types=['photo'], state = FSMAdmin.photo)
+    dp.register_message_handler(load_photo,content_types=['photo','document'], state = FSMAdmin.photo)
     dp.register_message_handler(load_description, state = FSMAdmin.description)
    

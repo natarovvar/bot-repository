@@ -14,8 +14,10 @@ x = [InlineKeyboardButton(text='xabr',url='https://habr.com/ru/all/?ysclid=l6v87
 
 kb_client = ReplyKeyboardMarkup(resize_keyboard = True)
 ikb_client = InlineKeyboardMarkup(row_width=2)
-idb_client = InlineKeyboardMarkup(row_width=2).add(InlineKeyboardButton(text='delete',callback_data='del'),\
-                                               InlineKeyboardButton(text='unload',callback_data='uload'     ))
+adb_admin = InlineKeyboardMarkup(row_width=2).add(InlineKeyboardButton(text='ADMINISTRATION PANEL',callback_data='dp'))
+idb_client = InlineKeyboardMarkup(row_width=2).add(InlineKeyboardButton(text='deleting from the database',callback_data='del'),\
+                                               InlineKeyboardButton(text='unloading from the database ',callback_data='uload'     ),\
+                                                InlineKeyboardButton(text='loading data',callback_data='ld'))      
 
 
 

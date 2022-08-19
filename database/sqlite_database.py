@@ -9,7 +9,7 @@ from create import dp, bot
 
 
 def sql_database_start():
-    global base, cur
+    global base,cur
     base = sq.connect('paperclip_database.db')
     cur = base.cursor()
     if base:
@@ -26,10 +26,20 @@ async def sql_add_command(state):
 async def sql_add_geopostition(username, lat, lon):
         cur.execute('INSERT INTO geolocation VALUES (?,?,?)', (username, lat, lon))
         base.commit()
+"""
+@dp.callback_query_handler(text='uload')
+async def del_uload(call: types.CallbackQuery):
+    for res in cur.execute('SELECT * FROM loaded').fetchall():
+        await bot.send_photo(call.from_user.id,res[0])
+  """      
+
+      
+async def sql_unload(call: types.CallbackQuery):
+    for res in cur.execute('SELECT * FROM loaded').fetchall():
+        await bot.send_photo(call.from_user.id,res[0],f'{res[1]}')
         
-async def sql_unload():
-    return await(cur.execute('SELECT * FROM loaded').fetchall())
-        
+     
+ 
 
 
 
