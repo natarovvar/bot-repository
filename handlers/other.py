@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher, Bot
-from aiogram.utils import executor
+from aiogram.utils import executor 
 from create import dp
 from aiogram.dispatcher.filters import Text
 import json
@@ -20,6 +20,7 @@ async def i_am_robot(message: types.Message):
 async def i_am_robot(message: types.Message):
     await message.answer('Сам такой!')
     await message.delete()
+
 
 
 def register_handlers_other(dp: Dispatcher):
